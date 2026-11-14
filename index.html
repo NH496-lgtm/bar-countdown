@@ -26,13 +26,13 @@ body {
 .row { display: flex; gap: clamp(4px, 2vw, 10px); flex-wrap: nowrap; justify-content: center; }
 .unit { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .tile {
-  position: relative; min-width: 1.9em; padding: 4px clamp(5px, 2vw, 10px); border-radius: 8px;
+  position: relative; min-width: 2.2em; padding: 4px 14px; border-radius: 8px;
   background: var(--tile); color: var(--tile-fg);
-  font-size: clamp(1.3rem, 9vw, 2.4rem); font-weight: 600; line-height: 1.15; text-align: center;
+  font-size: clamp(2rem, 12vw, 3rem); font-weight: 600; line-height: 1.15; text-align: center;
   font-variant-numeric: tabular-nums; box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 .tile::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--bg); opacity: .35; }
-.cap { font-size: clamp(0.55rem, 2.6vw, 0.72rem); font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.cap { font-size: 0.8rem; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
 .done { font-size: 1.3rem; font-weight: 600; text-align: center; }
 </style>
 </head>
@@ -40,10 +40,7 @@ body {
 <div class="wrap">
   <div class="label" id="label"></div>
   <div class="row" id="row">
-    <div class="unit"><div class="tile" id="d">--</div><div class="cap">Days</div></div>
-    <div class="unit"><div class="tile" id="h">--</div><div class="cap">Hours</div></div>
-    <div class="unit"><div class="tile" id="m">--</div><div class="cap">Minutes</div></div>
-    <div class="unit"><div class="tile" id="s">--</div><div class="cap">Seconds</div></div>
+    <div class="unit"><div class="tile" id="d">--</div><div class="cap">Days to go</div></div>
   </div>
 </div>
 <script>
@@ -56,16 +53,12 @@ const lab = document.getElementById("label");
 lab.append("Countdown to the ");
 const b = document.createElement("b"); b.textContent = title; lab.append(b, " · " + sub);
 const el = id => document.getElementById(id);
-const pad = n => String(n).padStart(2, "0");
 function tick() {
   const diff = target - Date.now();
   if (diff <= 0) { el("row").outerHTML = '<div class="done">Exam day. You\'ve got this!</div>'; return; }
   const s = Math.floor(diff / 1000);
   el("d").textContent = Math.floor(s / 86400);
-  el("h").textContent = pad(Math.floor(s % 86400 / 3600));
-  el("m").textContent = pad(Math.floor(s % 3600 / 60));
-  el("s").textContent = pad(s % 60);
-  setTimeout(tick, 1000 - (Date.now() % 1000));
+  setTimeout(tick, 60000);
 }
 tick();
 </script>
